@@ -1,0 +1,281 @@
+#include <iostream>
+#include <vector>
+#include "AVLtree.h"
+
+
+//Get Height of a node
+/*Node* AVLTree::height(Node* node) {
+    if (node == nullptr) {
+        return node;
+    }
+    node->height = 1 + std::max(node->left ? node->left->height : 0,
+        node->right ? node->right->height : 0);
+    return node;
+}*/
+//Ufid Valid method
+bool AVLTree::ufid_valid(std::string ufid) {
+    //Check ufid is 8 digits and is ONLY digits
+    int count = 0;
+    for (char c: ufid) {
+        if (!isdigit(c)) {
+            return false;
+        }
+        count++;
+    }
+    if (count != 8) {
+        return false;
+    }
+    return true;
+}
+//Name Valid Method
+bool AVLTree::name_valid(std::string name) {
+    for(char c: name) {
+        if (!isalpha(c) && c != ' ') {
+            return false;
+        }
+    }
+    return true;
+}
+//Rotate Left helper method
+//Cited from the Stepik Module 5
+Node* AVLTree::rotateLeft(Node* node) {
+    Node* rightChild = node->right;
+    node->right = rightChild->left;
+    rightChild->left = node;
+    //Update height
+    node->height = 1 + std::max(node->left ? node->left->height : 0,
+        node->right ? node->right->height : 0);
+    rightChild->height = 1 + std::max(rightChild->left ? rightChild->left->height : 0,
+        rightChild->right ? rightChild->right->height : 0);
+    return rightChild;
+}
+//Rotate Right helper method
+//Cited from the Stepik Module 5
+Node* AVLTree::rotateRight(Node* node) {
+    Node* leftChild = node->left;
+    node->left = leftChild->right;
+    leftChild->right = node;
+    //Update Height
+    node->height = 1 + std::max(node->left ? node->left->height : 0,
+        node->right ? node->right->height : 0);
+    leftChild->height = 1 + std::max(leftChild->left ? leftChild->left->height : 0,
+        leftChild->right ? leftChild->right->height : 0);
+    return leftChild;
+}
+//Traversals
+//Pre Order Traversal
+void AVLTree::preOrder() {
+    preOrderHelper(this->root);
+}
+void AVLTree::preOrderHelper(Node* node) {
+    if (node != nullptr) {
+        std::cout << node->name << std::endl;
+        preOrderHelper(node->left);
+        preOrderHelper(node->right);
+    }
+}
+//In Order Traversal
+void AVLTree::inOrder() {
+    inOrderHelper(this->root);
+}
+void AVLTree::inOrderHelper(Node* node) {
+    if (node != nullptr) {
+        inOrderHelper(node->left);
+        std::cout << node->name << std::endl;
+        inOrderHelper(node->right);
+    }
+}
+//Post Order Traversal
+void AVLTree::postOrder() {
+    postOrderHelper(this->root);
+}
+void AVLTree::postOrderHelper(Node* node) {
+    if (node != nullptr) {
+        postOrderHelper(node->left);
+        postOrderHelper(node->right);
+        std::cout << node->name << std::endl;
+    }
+}
+//Level Order Traversal
+void AVLTree::levelCount() {
+    levelCountHelper(this->root);
+}
+void AVLTree::levelCountHelper(Node* node) {
+    if (node == nullptr) {
+        return;
+    }
+    std::cout << node->height << std::endl;
+}
+//Code from Jackie Wang's video
+//This will call an insert method that is private, so it is not visible to the user
+void AVLTree::insert(std::string name, std::string ufid) {
+    //Check if ufid is valid
+    bool valid_ufid = ufid_valid(ufid);
+    if (!valid_ufid) {
+        std::cout << "unsuccessful" << std::endl;
+        return;
+    }
+    //Check if name is valid
+    bool valid_name = name_valid(name);
+    if (!valid_name) {
+        std::cout << "unsuccessful" << std::endl;
+        return;
+    }
+    //Call InsertHelper from the insert method so memory is not exposed to the public
+    this->root = insertHelper(this->root, name, ufid);
+}
+//Insert Helper method
+Node* AVLTree::insertHelper(Node* node, std::string name, std::string ufid) {
+    //Check where to insert the node
+    if (node == nullptr) {
+        std::cout << "successful" << std::endl;
+        return new Node(name,ufid);
+    }
+    //Check if there are duplicates of ufid
+    if (ufid == node->ufid) {
+        std::cout << "unsuccessful" << std::endl;
+        return node;
+    }
+    //Check whether ufid should be on the left or right
+    if (ufid > node->ufid) {
+        node->right = insertHelper(node->right, name, ufid);
+    }
+    else {
+        node->left = insertHelper(node->left, name, ufid);
+    }
+
+    //Check height of node for balancing purposes
+    node->height = 1 + std::max(node->left ? node->left->height : 0,
+        node->right ? node->right->height : 0);
+
+    //Find balance factor
+    if (node->left != nullptr && node->right != nullptr) {
+        node->balance = node->left->height - node->right->height;
+    }
+    else if (node->left != nullptr && node->right == nullptr) {
+        node->balance = node->left->height;
+    }
+    else if (node->left == nullptr && node->right != nullptr) {
+        node->balance = -(node->right->height);
+    }
+
+    //Do rotations based off of balance
+    //If root (current node) is Left heavy
+    if (node->balance > 1) {
+        //If left's subtree is right heavy - Left Right rotation
+        if (node->left && node->left->balance == -1) {
+            node->left = rotateLeft(node->left);
+            return rotateRight(node);
+        }
+        //If left's subtree is left heavy - Right rotation
+        else {
+            return rotateRight(node);
+        }
+
+    }
+    //If root (current node) is right heavy
+    else if (node->balance < -1) {
+        //If right's subtree is left heavy - Right Left Rotation
+        if (node->right && node->right->balance == 1) {
+            node->right = rotateRight(node->right);
+            return rotateLeft(node);
+        }
+        //right's subtree is right heavy - Left Rotation
+        else {
+            return rotateLeft(node);
+        }
+    }
+    //return the current node if no rotations were to happen
+    return node;
+}
+
+void AVLTree::searchId( std::string ufid) {
+    //Check if ufid is valid
+    bool valid_ufid = ufid_valid(ufid);
+    if (!valid_ufid) {
+        std::cout << "unsuccessful" << std::endl;
+        return;
+    }
+    searchIdHelper(this->root, ufid);
+}
+//Search ID Helper
+void AVLTree::searchIdHelper(Node* node, std::string ufid) {
+    if (node == nullptr) {
+        std::cout << "unsuccessful" << std::endl;
+        return;
+    }
+    if (node->ufid == ufid) {
+        std::cout << node->name << std::endl;
+        return;
+    }
+    else if (ufid > node->ufid) {
+        searchIdHelper(node->right,ufid);
+    }
+    else {
+        searchIdHelper(node->left, ufid);
+    }
+}
+
+void AVLTree::searchName(std::string name) {
+    //Check if name is valid
+    bool valid_name = name_valid(name);
+    if (!valid_name) {
+        std::cout << "unsuccessful" << std::endl;
+        return;
+    }
+    //Hold all ufids with duplicate names
+    std::vector<std::string> ufids;
+    searchNameHelper(this->root, name, ufids);
+    //Print "unsuccessful" is there are no names that match
+    if (ufids.size() == 0) {
+        std::cout << "unsuccessful" << std::endl;
+    }
+}
+//Search name helper
+//FIX THIS AFTER DOING THE TRAVERSAL METHODS
+void AVLTree::searchNameHelper(Node* node, std::string name, std::vector<std::string>& ufids) {
+    if (node == nullptr) {
+        return;
+    }
+    if (node->name == name) {
+        ufids.push_back(node->ufid);
+    }
+    //Traverse with preorder traversal
+    searchNameHelper(node->left,name,ufids);
+    searchNameHelper(node->right,name,ufids);
+
+    for (int i = 0; i < ufids.size(); i++) {
+        std::cout << ufids[i] << std::endl;
+    }
+}
+//Remove Method
+void AVLTree::removeId(std::string ufid) {
+    //Check if ufid is valid
+    bool valid_ufid = ufid_valid(ufid);
+    if (!valid_ufid) {
+        std::cout << "unsuccessful" << std::endl;
+        return;
+    }
+    removeIdHelper(this->root, ufid);
+}
+void removeIdHelper(Node* node, std::string ufid) {
+    if (node == nullptr) {
+        return;
+    }
+    //Node has no children
+    if (!node->left && !node->right) {
+        delete node;
+    }
+    //Node has only the left child
+    else if (node->left && !node->right) {
+
+    }
+    //Node has only the right child
+    else if (!node->left && node->right) {
+
+    }
+    //Node has both children
+    else if (node->left && node->right) {
+
+    }
+}
