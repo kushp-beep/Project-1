@@ -32,13 +32,12 @@ class AVLTree {
     Node* insertHelper(Node* node, std::string name, std::string ufid);
     void searchIdHelper(Node* node, std::string ufid);
     void searchNameHelper(Node* node, std::string name, std::vector<std::string>& ufids);
-    void removeIdHelper(Node* node, std::string ufid);
+    Node* removeIdHelper(Node* node, std::string ufid);
+    Node* removeInorderNHelper(Node* node, int n, std::vector<Node*>& node_inorder);
     void preOrderHelper(Node* node);
     void inOrderHelper(Node* node);
     void postOrderHelper(Node* node);
     void levelCountHelper(Node* node);
-    //Get Height of a node
-    Node *height(Node* node);
     //Rotations
     Node* rotateLeft(Node* node);
     Node* rotateRight(Node* node);
@@ -50,6 +49,7 @@ public:
     void searchName(std::string name);
     //Remove Methods
     void removeId(std::string ufid);
+    void removeInorderN(int n);
     //Traversal Methods
     void preOrder();
     void inOrder();

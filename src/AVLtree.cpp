@@ -2,16 +2,7 @@
 #include <vector>
 #include "AVLtree.h"
 
-
-//Get Height of a node
-/*Node* AVLTree::height(Node* node) {
-    if (node == nullptr) {
-        return node;
-    }
-    node->height = 1 + std::max(node->left ? node->left->height : 0,
-        node->right ? node->right->height : 0);
-    return node;
-}*/
+//Parsing Method
 //Ufid Valid method
 bool AVLTree::ufid_valid(std::string ufid) {
     //Check ufid is 8 digits and is ONLY digits
@@ -256,26 +247,76 @@ void AVLTree::removeId(std::string ufid) {
         std::cout << "unsuccessful" << std::endl;
         return;
     }
-    removeIdHelper(this->root, ufid);
+    this->root = removeIdHelper(this->root, ufid);
 }
-void removeIdHelper(Node* node, std::string ufid) {
+Node* AVLTree::removeIdHelper(Node* node, std::string ufid) {
     if (node == nullptr) {
-        return;
+        return node;
     }
+    if (ufid > node->ufid) {
+        node->right = removeIdHelper(node->right, ufid);
+    }
+    else if (ufid < node->ufid) {
+        node->left = removeIdHelper(node->left, ufid);
+    }
+    //Found node that has to be deleted
     //Node has no children
-    if (!node->left && !node->right) {
+    if (node->ufid == ufid && !node->left && !node->right) {
         delete node;
+        return nullptr;
     }
     //Node has only the left child
-    else if (node->left && !node->right) {
-
+    if (node->ufid == ufid && node->left && !node->right) {
+        Node* temp = node->left;
+        delete node;
+        return temp;
     }
     //Node has only the right child
-    else if (!node->left && node->right) {
-
+    if (node->ufid == ufid && !node->left && node->right) {
+        Node* temp = node->right;
+        delete node;
+        return temp;
     }
     //Node has both children
-    else if (node->left && node->right) {
-
+    if (node->ufid == ufid && node->left && node->right) {
+        //Find the inorder successor
+        Node* temp = node->right;
+        while (temp->left != nullptr) {
+            temp = temp->left;
+        }
+        //Swap the node and the inorder successor
+        node->ufid = temp->ufid;
+        node->name = temp->name;
+        //Delete temp node recursively
+        node->right = removeIdHelper(node->right, temp->ufid);
+        return node;
     }
+    return node;
+}
+void AVLTree::removeInorderN(int n) {
+    std::vector<Node*> node_inorder;
+    this->root = removeInorderNHelper(this->root, n, node_inorder);
+    //Check if n is valid
+    if (node_inorder.size() <= n || n < 0) {
+        std::cout << "unsuccessful" << std::endl;
+    }
+    else {
+        //Remove nth node
+        for (int i = 0; i < node_inorder.size(); i++) {
+            if (i == n) {
+                std::cout << "successful" << std::endl;
+                removeId(node_inorder[i]->ufid);
+            }
+        }
+    }
+}
+Node* AVLTree::removeInorderNHelper(Node* node, int n, std::vector<Node*>& node_inorder) {
+    if (node == nullptr) {
+        return node;
+    }
+    removeInorderNHelper(node->left, n, node_inorder);
+    node_inorder.push_back(node);
+    removeInorderNHelper(node->right, n, node_inorder);
+
+    return node;
 }
