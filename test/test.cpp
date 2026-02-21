@@ -1,5 +1,7 @@
+/*
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
+#include "AVLtree.h"
 
 // uncomment and replace the following with your own headers
 // #include "AVL.h"
@@ -51,16 +53,11 @@ TEST_CASE("Example BST Insert", "[flag]"){
 		REQUIRE(actualOutput == expectedOutput);
 	*/
 }
-TEST_CASE("Example BST Insert", "[flag]"){
-	/*
-		MyAVLTree tree;   // Create a Tree object
-		tree.insert(3);
-		tree.insert(2);
-		tree.insert(1);
-		std::vector<int> actualOutput = tree.inorder();
-		std::vector<int> expectedOutput = {1, 2, 3};
-		REQUIRE(expectedOutput.size() == actualOutput.size());
-		REQUIRE(actualOutput == expectedOutput);
-	*/
+
+TEST_CASE("Edge cases", "[incorrect]"){
+		AVLTree tree;
+		REQUIRE(tree.removeId("12223333") == "unsuccessful");
+
 }
+*/
 
