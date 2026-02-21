@@ -8,6 +8,7 @@
 #endif //PROJECT_1_DSA_AVL_TREES_AVLTREE_H
 
 #include <iostream>
+#include <vector>
 #include <string>
 //Code from Jackie Wang's video
 struct Node{

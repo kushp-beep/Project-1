@@ -235,7 +235,7 @@ void AVLTree::searchNameHelper(Node* node, std::string name, std::vector<std::st
     searchNameHelper(node->left,name,ufids);
     searchNameHelper(node->right,name,ufids);
 
-    for (int i = 0; i < ufids.size(); i++) {
+    for (size_t i = 0; i < ufids.size(); i++) {
         std::cout << ufids[i] << std::endl;
     }
 }
@@ -248,6 +248,7 @@ void AVLTree::removeId(std::string ufid) {
         return;
     }
     this->root = removeIdHelper(this->root, ufid);
+    std::cout << "successful" << std::endl;
 }
 Node* AVLTree::removeIdHelper(Node* node, std::string ufid) {
     if (node == nullptr) {
@@ -297,13 +298,13 @@ void AVLTree::removeInorderN(int n) {
     std::vector<Node*> node_inorder;
     this->root = removeInorderNHelper(this->root, n, node_inorder);
     //Check if n is valid
-    if (node_inorder.size() <= n || n < 0) {
+    if (node_inorder.size() <= (size_t)n || n < 0) {
         std::cout << "unsuccessful" << std::endl;
     }
     else {
         //Remove nth node
-        for (int i = 0; i < node_inorder.size(); i++) {
-            if (i == n) {
+        for (size_t i = 0; i < node_inorder.size(); i++) {
+            if (i == (size_t)n) {
                 std::cout << "successful" << std::endl;
                 removeId(node_inorder[i]->ufid);
             }
