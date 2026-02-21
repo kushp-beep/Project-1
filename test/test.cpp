@@ -18,7 +18,7 @@ TEST_CASE("Example Test Name - Change me!", "[flag]"){
 
 	// all REQUIRE blocks must evaluate to true for the whole test to pass
 	REQUIRE(true); // also fix me!
-}
+// }
 
 TEST_CASE("Test 2", "[flag]"){
 	// you can also use "sections" to share setup code between tests, for example:
@@ -42,7 +42,7 @@ TEST_CASE("Test 2", "[flag]"){
 // the provided test from the template is below.
 
 TEST_CASE("Example BST Insert", "[flag]"){
-	/*
+
 		MyAVLTree tree;   // Create a Tree object
 		tree.insert(3);
 		tree.insert(2);
@@ -51,8 +51,9 @@ TEST_CASE("Example BST Insert", "[flag]"){
 		std::vector<int> expectedOutput = {1, 2, 3};
 		REQUIRE(expectedOutput.size() == actualOutput.size());
 		REQUIRE(actualOutput == expectedOutput);
-	*/
+
 // }
+*/
 
 
 
