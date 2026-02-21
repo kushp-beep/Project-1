@@ -66,7 +66,7 @@ void AVLTree::preOrder() {
     }
     std::cout << std::endl;
 }
-void AVLTree::preOrderHelper(Node* node, std::vector<std::string> name) {
+void AVLTree::preOrderHelper(Node* node, std::vector<std::string>& name) {
     if (node != nullptr) {
         name.push_back(node->name);
         preOrderHelper(node->left, name);
@@ -85,7 +85,7 @@ void AVLTree::inOrder() {
     }
     std::cout << std::endl;
 }
-void AVLTree::inOrderHelper(Node* node,  std::vector<std::string> name) {
+void AVLTree::inOrderHelper(Node* node,  std::vector<std::string>& name) {
     if (node != nullptr) {
         inOrderHelper(node->left, name);
         name.push_back(node->name);
@@ -104,7 +104,7 @@ void AVLTree::postOrder() {
     }
     std::cout << std::endl;
 }
-void AVLTree::postOrderHelper(Node* node,  std::vector<std::string> name) {
+void AVLTree::postOrderHelper(Node* node,  std::vector<std::string>& name) {
     if (node != nullptr) {
         postOrderHelper(node->left, name);
         postOrderHelper(node->right, name);
