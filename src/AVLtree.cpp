@@ -60,10 +60,11 @@ void AVLTree::preOrder() {
 }
 void AVLTree::preOrderHelper(Node* node) {
     if (node != nullptr) {
-        std::cout << node->name;
+        std::cout << node->name << ", ";
         preOrderHelper(node->left);
         preOrderHelper(node->right);
     }
+    std::cout << std::endl;
 }
 //In Order Traversal
 void AVLTree::inOrder() {
@@ -72,9 +73,10 @@ void AVLTree::inOrder() {
 void AVLTree::inOrderHelper(Node* node) {
     if (node != nullptr) {
         inOrderHelper(node->left);
-        std::cout << node->name;
+        std::cout << node->name << ", ";
         inOrderHelper(node->right);
     }
+    std::cout << std::endl;
 }
 //Post Order Traversal
 void AVLTree::postOrder() {
@@ -84,8 +86,9 @@ void AVLTree::postOrderHelper(Node* node) {
     if (node != nullptr) {
         postOrderHelper(node->left);
         postOrderHelper(node->right);
-        std::cout << node->name;
+        std::cout << node->name << ", ";
     }
+    std::cout << std::endl;
 }
 //Level Order Traversal
 void AVLTree::levelCount() {
