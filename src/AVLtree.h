@@ -15,7 +15,7 @@ struct Node{
     //Node Attributes
     std::string name;
     std::string ufid;
-    int height = 0;
+    int height = 1;
     int balance = 0;
     Node* left;
     Node* right;

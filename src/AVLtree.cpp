@@ -60,7 +60,7 @@ void AVLTree::preOrder() {
 }
 void AVLTree::preOrderHelper(Node* node) {
     if (node != nullptr) {
-        std::cout << node->name << std::endl;
+        std::cout << node->name;
         preOrderHelper(node->left);
         preOrderHelper(node->right);
     }
@@ -72,7 +72,7 @@ void AVLTree::inOrder() {
 void AVLTree::inOrderHelper(Node* node) {
     if (node != nullptr) {
         inOrderHelper(node->left);
-        std::cout << node->name << std::endl;
+        std::cout << node->name;
         inOrderHelper(node->right);
     }
 }
@@ -84,7 +84,7 @@ void AVLTree::postOrderHelper(Node* node) {
     if (node != nullptr) {
         postOrderHelper(node->left);
         postOrderHelper(node->right);
-        std::cout << node->name << std::endl;
+        std::cout << node->name;
     }
 }
 //Level Order Traversal
@@ -221,6 +221,11 @@ void AVLTree::searchName(std::string name) {
     if (ufids.size() == 0) {
         std::cout << "unsuccessful" << std::endl;
     }
+    else {
+        for (size_t i = 0; i < ufids.size(); i++) {
+            std::cout << ufids[i] << std::endl;
+        }
+    }
 }
 //Search name helper
 //FIX THIS AFTER DOING THE TRAVERSAL METHODS
@@ -234,10 +239,6 @@ void AVLTree::searchNameHelper(Node* node, std::string name, std::vector<std::st
     //Traverse with preorder traversal
     searchNameHelper(node->left,name,ufids);
     searchNameHelper(node->right,name,ufids);
-
-    for (size_t i = 0; i < ufids.size(); i++) {
-        std::cout << ufids[i] << std::endl;
-    }
 }
 //Remove Method
 void AVLTree::removeId(std::string ufid) {
