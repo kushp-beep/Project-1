@@ -58,14 +58,13 @@ Node* AVLTree::rotateRight(Node* node) {
 void AVLTree::preOrder() {
     std::vector<std::string> name;
     preOrderHelper(this->root, name);
-    for (int i = 0; i < name.size(); i++) {
+    for (size_t i = 0; i < name.size(); i++) {
         std::cout << name[i];
         if (i != name.size() - 1) {
             std::cout << ", ";
         }
     }
     std::cout << std::endl;
-}
 }
 void AVLTree::preOrderHelper(Node* node, std::vector<std::string> name) {
     if (node != nullptr) {
@@ -78,14 +77,13 @@ void AVLTree::preOrderHelper(Node* node, std::vector<std::string> name) {
 void AVLTree::inOrder() {
     std::vector<std::string> name;
     inOrderHelper(this->root, name);
-    for (int i = 0; i < name.size(); i++) {
+    for (size_t i = 0; i < name.size(); i++) {
         std::cout << name[i];
         if (i != name.size() - 1) {
             std::cout << ", ";
         }
     }
     std::cout << std::endl;
-}
 }
 void AVLTree::inOrderHelper(Node* node,  std::vector<std::string> name) {
     if (node != nullptr) {
@@ -98,7 +96,7 @@ void AVLTree::inOrderHelper(Node* node,  std::vector<std::string> name) {
 void AVLTree::postOrder() {
     std::vector<std::string> name;
     postOrderHelper(this->root, name);
-    for (int i = 0; i < name.size(); i++) {
+    for (size_t i = 0; i < name.size(); i++) {
         std::cout << name[i];
         if (i != name.size() - 1) {
             std::cout << ", ";
