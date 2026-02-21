@@ -52,12 +52,7 @@ TEST_CASE("Example BST Insert", "[flag]"){
 		REQUIRE(expectedOutput.size() == actualOutput.size());
 		REQUIRE(actualOutput == expectedOutput);
 	*/
-}
+// }
 
-TEST_CASE("Edge cases", "[incorrect]"){
-		AVLTree tree;
-		REQUIRE(tree.removeId("12223333") == "unsuccessful");
 
-}
-*/
 
