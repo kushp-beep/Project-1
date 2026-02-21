@@ -33,7 +33,7 @@ class AVLTree {
     Node* insertHelper(Node* node, std::string name, std::string ufid);
     void searchIdHelper(Node* node, std::string ufid);
     void searchNameHelper(Node* node, std::string name, std::vector<std::string>& ufids);
-    Node* removeIdHelper(Node* node, std::string ufid);
+    Node* removeIdHelper(Node* node, std::string ufid, bool& is_removed);
     Node* removeInorderNHelper(Node* node, int n, std::vector<Node*>& node_inorder);
     void preOrderHelper(Node* node, std::vector<std::string>& name);
     void inOrderHelper(Node* node, std::vector<std::string>& name);

@@ -38,6 +38,11 @@ Node* AVLTree::rotateLeft(Node* node) {
         node->right ? node->right->height : 0);
     rightChild->height = 1 + std::max(rightChild->left ? rightChild->left->height : 0,
         rightChild->right ? rightChild->right->height : 0);
+    //Update balance
+    node->balance = (node->left ? node->left->height : 0) -
+        (node->right ? node->right->height : 0);
+    rightChild->balance = (rightChild->left ? rightChild->left->height : 0) -
+        (rightChild->right ? rightChild->right->height : 0);
     return rightChild;
 }
 //Rotate Right helper method
@@ -51,6 +56,11 @@ Node* AVLTree::rotateRight(Node* node) {
         node->right ? node->right->height : 0);
     leftChild->height = 1 + std::max(leftChild->left ? leftChild->left->height : 0,
         leftChild->right ? leftChild->right->height : 0);
+    //Update Balance Factor
+    node->balance = (node->left ? node->left->height : 0) -
+        (node->right ? node->right->height : 0);
+    leftChild->balance = (leftChild->left ? leftChild->left->height : 0) -
+        (leftChild->right ? leftChild->right->height : 0);
     return leftChild;
 }
 //Traversals
@@ -272,35 +282,44 @@ void AVLTree::removeId(std::string ufid) {
         std::cout << "unsuccessful" << std::endl;
         return;
     }
-    this->root = removeIdHelper(this->root, ufid);
-    std::cout << "successful" << std::endl;
+    bool is_removed = false;
+    this->root = removeIdHelper(this->root, ufid, is_removed);
+    if (is_removed) {
+        std::cout << "successful" << std::endl;
+    }
+    else {
+        std::cout << "unsuccessful" << std::endl;
+    }
 }
-Node* AVLTree::removeIdHelper(Node* node, std::string ufid) {
+Node* AVLTree::removeIdHelper(Node* node, std::string ufid, bool& is_removed) {
     if (node == nullptr) {
         return node;
     }
     if (ufid > node->ufid) {
-        node->right = removeIdHelper(node->right, ufid);
+        node->right = removeIdHelper(node->right, ufid, is_removed);
     }
     else if (ufid < node->ufid) {
-        node->left = removeIdHelper(node->left, ufid);
+        node->left = removeIdHelper(node->left, ufid, is_removed);
     }
     //Found node that has to be deleted
     //Node has no children
     if (node->ufid == ufid && !node->left && !node->right) {
         delete node;
+        is_removed = true;
         return nullptr;
     }
     //Node has only the left child
     if (node->ufid == ufid && node->left && !node->right) {
         Node* temp = node->left;
         delete node;
+        is_removed = true;
         return temp;
     }
     //Node has only the right child
     if (node->ufid == ufid && !node->left && node->right) {
         Node* temp = node->right;
         delete node;
+        is_removed = true;
         return temp;
     }
     //Node has both children
@@ -314,7 +333,8 @@ Node* AVLTree::removeIdHelper(Node* node, std::string ufid) {
         node->ufid = temp->ufid;
         node->name = temp->name;
         //Delete temp node recursively
-        node->right = removeIdHelper(node->right, temp->ufid);
+        node->right = removeIdHelper(node->right, temp->ufid, is_removed);
+        is_removed = true;
         return node;
     }
     return node;
@@ -330,7 +350,6 @@ void AVLTree::removeInorderN(int n) {
         //Remove nth node
         for (size_t i = 0; i < node_inorder.size(); i++) {
             if (i == (size_t)n) {
-                std::cout << "successful" << std::endl;
                 removeId(node_inorder[i]->ufid);
             }
         }
