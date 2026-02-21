@@ -58,7 +58,7 @@ int main(){
 				}
 			}
 			else if (command == "printInorder") {
-				tree.preOrder();
+				tree.inOrder();
 			}
 			else if (command == "printPreorder") {
 				tree.preOrder();
