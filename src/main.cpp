@@ -41,6 +41,7 @@ int main(){
 			}
 			else if (command == "search") {
 				//Extract ufid
+				is >> std::ws;
 				if (is.peek() == '"') {
 					//Search name
 					//Extract name

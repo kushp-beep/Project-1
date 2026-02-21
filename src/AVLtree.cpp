@@ -56,39 +56,62 @@ Node* AVLTree::rotateRight(Node* node) {
 //Traversals
 //Pre Order Traversal
 void AVLTree::preOrder() {
-    preOrderHelper(this->root);
-}
-void AVLTree::preOrderHelper(Node* node) {
-    if (node != nullptr) {
-        std::cout << node->name << ", ";
-        preOrderHelper(node->left);
-        preOrderHelper(node->right);
+    std::vector<std::string> name;
+    preOrderHelper(this->root, name);
+    for (int i = 0; i < name.size(); i++) {
+        std::cout << name[i];
+        if (i != name.size() - 1) {
+            std::cout << ", ";
+        }
     }
     std::cout << std::endl;
+}
+}
+void AVLTree::preOrderHelper(Node* node, std::vector<std::string> name) {
+    if (node != nullptr) {
+        name.push_back(node->name);
+        preOrderHelper(node->left, name);
+        preOrderHelper(node->right, name);
+    }
 }
 //In Order Traversal
 void AVLTree::inOrder() {
-    inOrderHelper(this->root);
-}
-void AVLTree::inOrderHelper(Node* node) {
-    if (node != nullptr) {
-        inOrderHelper(node->left);
-        std::cout << node->name << ", ";
-        inOrderHelper(node->right);
+    std::vector<std::string> name;
+    inOrderHelper(this->root, name);
+    for (int i = 0; i < name.size(); i++) {
+        std::cout << name[i];
+        if (i != name.size() - 1) {
+            std::cout << ", ";
+        }
     }
     std::cout << std::endl;
+}
+}
+void AVLTree::inOrderHelper(Node* node,  std::vector<std::string> name) {
+    if (node != nullptr) {
+        inOrderHelper(node->left, name);
+        name.push_back(node->name);
+        inOrderHelper(node->right, name);
+    }
 }
 //Post Order Traversal
 void AVLTree::postOrder() {
-    postOrderHelper(this->root);
-}
-void AVLTree::postOrderHelper(Node* node) {
-    if (node != nullptr) {
-        postOrderHelper(node->left);
-        postOrderHelper(node->right);
-        std::cout << node->name << ", ";
+    std::vector<std::string> name;
+    postOrderHelper(this->root, name);
+    for (int i = 0; i < name.size(); i++) {
+        std::cout << name[i];
+        if (i != name.size() - 1) {
+            std::cout << ", ";
+        }
     }
     std::cout << std::endl;
+}
+void AVLTree::postOrderHelper(Node* node,  std::vector<std::string> name) {
+    if (node != nullptr) {
+        postOrderHelper(node->left, name);
+        postOrderHelper(node->right, name);
+        name.push_back(node->name);
+    }
 }
 //Level Order Traversal
 void AVLTree::levelCount() {
